@@ -5,6 +5,11 @@
 #include <TB6612FNG.h>   // TB6612FNG 电机驱动
 #include <Audio.h>       // 从 ESP8266Audio 库，用于 I2S 音频
 #include "NetworkManager.h"  // 网络与配网管理
+#include "CameraDevice.h"
+#include "ScreenDevice.h"
+#include "AudioDevice.h"
+#include "MotorDevice.h"
+#include "BuzzerDevice.h"
 
 // 引脚定义（面包板自定义，根据你的连接调整）
 #define BUZZER_PIN 4    // BB 蜂鸣器
@@ -50,33 +55,24 @@
 #define BIN2     21
 #define PWMB     22  // PWM B
 
-TFT_eSPI tft = TFT_eSPI();  // 屏幕实例
-TB6612FNG motors(STBY_PIN);  // 电机驱动实例
-Audio audio;  // 音频实例
-
 NetworkManager net;
+
+// 硬件模块封装实例
+CameraDevice camera;
+ScreenDevice screen;
+AudioDevice audioDev;
+MotorDevice motor;
+BuzzerDevice buzzer;
 
 void setup() {
   Serial.begin(115200);
   // 硬件初始化保留在 Device 层，各模块可以进一步封装为类
-  // 初始化屏幕
-  tft.init();
-  tft.setRotation(0);  // 根据方向调整
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_WHITE);
-  tft.drawString("AI Desk Pet Ready", 10, 10, 2);
-
-  // 初始化蜂鸣器
-  pinMode(BUZZER_PIN, OUTPUT);
-
-  // 初始化电机 (TB6612FNG)
-  motors.begin();
-  motors.setMotorPins(AIN1, AIN2, PWMA, BIN1, BIN2, PWMB);
-
-  // 初始化音频 I2S
-  audio.setPinout(I2S_SCK, I2S_WS, I2S_DOUT);  // 输出到 MAX98357
-  audio.setI2SMode(I2S_PHILIPS_MODE);  // 标准模式
-  audio.setVolume(10);  // 音量
+  // 初始化各硬件模块（封装）
+  screen.init();
+  buzzer.init();
+  motor.init();
+  audioDev.init();
+  camera.init();
 
   // 启动网络管理（若无 WiFi 则进入 AP 配网）
   net.begin();
