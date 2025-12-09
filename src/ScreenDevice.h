@@ -3,6 +3,7 @@
 
 #include <TFT_eSPI.h>
 #include <ArduinoJson.h>
+#include "pins.h"
 
 class ScreenDevice {
 public:

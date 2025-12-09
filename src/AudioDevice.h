@@ -3,6 +3,7 @@
 
 #include <Audio.h>
 #include <ArduinoJson.h>
+#include "pins.h"
 
 class AudioDevice {
 public:

@@ -1,11 +1,6 @@
 #include "AudioDevice.h"
 #include <Arduino.h>
 
-// Default I2S pins (match main.cpp)
-const int I2S_WS = 42;
-const int I2S_SCK = 41;
-const int I2S_DOUT = 40;
-
 void AudioDevice::init() {
   if (initialized) return;
   audio.setPinout(I2S_SCK, I2S_WS, I2S_DOUT);
