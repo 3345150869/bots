@@ -53,10 +53,16 @@ void CameraDevice::captureAndSend() {
   esp_camera_fb_return(fb);
 }
 
-void CameraDevice::executeCommand(const String &cmd, JsonObject &params) {
+bool CameraDevice::executeCommand(const String &cmd, const JsonObject &params) {
+  if (!initialized) {
+    Serial.println("Camera not initialized");
+    return false;
+  }
   if (cmd == "capture") {
     captureAndSend();
+    return true;
   } else {
     Serial.printf("CameraDevice unknown cmd: %s\n", cmd.c_str());
+    return false;
   }
 }

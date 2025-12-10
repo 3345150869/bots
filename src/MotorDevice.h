@@ -1,7 +1,7 @@
 #ifndef MOTOR_DEVICE_H
 #define MOTOR_DEVICE_H
 
-#include <TB6612FNG.h>
+#include <Tb6612fng.h>
 #include <ArduinoJson.h>
 #include "pins.h"
 
@@ -9,9 +9,9 @@ class MotorDevice {
 public:
   MotorDevice();
   void init();
-  void executeCommand(const String &cmd, JsonObject &params);
+  bool executeCommand(const String &cmd, const JsonObject &params);
 private:
-  TB6612FNG motors;
+  Tb6612fng motors{STBY_PIN, AIN1, AIN2, PWMA, BIN1, BIN2, PWMB};
   bool initialized = false;
 };
 

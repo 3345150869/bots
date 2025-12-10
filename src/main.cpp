@@ -1,11 +1,10 @@
 #include <Arduino.h>
 #include <WiFi.h>  // 联网（可选连 Node 服务器）
 #include <esp_camera.h>  // OV2640 摄像头
-#include <TFT_eSPI.h>    // ST7789 屏幕
-#include <TB6612FNG.h>   // TB6612FNG 电机驱动
-#include <Audio.h>       // 从 ESP8266Audio 库，用于 I2S 音频
+#include <Tb6612fng.h>   // TB6612FNG 电机驱动
 #include <ArduinoJson.h>
 #include "pins.h"        // 集中管理的引脚定义
+#include <TFT_eSPI.h>    // ST7789 屏幕
 #include "NetworkManager.h"  // 网络与配网管理
 #include "CameraDevice.h"
 #include "ScreenDevice.h"
@@ -38,7 +37,8 @@ void setup() {
 
 void loop() {
   // 示例: 蜂鸣器响
-  buzzer.executeCommand("beep", JsonObject());  // 示例调用
+  JsonDocument beepDoc;
+  buzzer.executeCommand("beep", beepDoc.to<JsonObject>());  // 示例调用
   delay(1000);
 
   // 示例: 电机转
@@ -48,7 +48,8 @@ void loop() {
   params["b"] = 255;
   motor.executeCommand("drive", params);
   delay(1000);
-  motor.executeCommand("brake", JsonObject());
+  JsonDocument brakeDoc;
+  motor.executeCommand("brake", brakeDoc.to<JsonObject>());
   delay(1000);
 
   // 网络任务（处理 AP 配网和 Socket.io）

@@ -1,17 +1,19 @@
 #ifndef AUDIO_DEVICE_H
 #define AUDIO_DEVICE_H
 
-#include <Audio.h>
+#include <Arduino.h>
 #include <ArduinoJson.h>
+#include "driver/i2s.h"
 #include "pins.h"
 
 class AudioDevice {
 public:
   void init();
-  void executeCommand(const String &cmd, JsonObject &params);
+  bool executeCommand(const String &cmd, const JsonObject &params);
 private:
-  Audio audio;
+  void configureI2S();
   bool initialized = false;
+  int volume = 10;
 };
 
 #endif

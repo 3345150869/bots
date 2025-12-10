@@ -2,14 +2,14 @@
 #define PINS_H
 
 // ============ 蜂鸣器 ============
-#define BUZZER_PIN 4
+#define BUZZER_PIN 25
 
 // ============ 摄像头 OV2640 (ESP32-S3 DVP 接口) ============
 #define CAM_PWDN_GPIO_NUM    -1
 #define CAM_RESET_GPIO_NUM   -1
-#define CAM_XCLK_GPIO_NUM    15
-#define CAM_SIOD_GPIO_NUM    4
-#define CAM_SIOC_GPIO_NUM    5
+#define CAM_XCLK_GPIO_NUM    26
+#define CAM_SIOD_GPIO_NUM    27
+#define CAM_SIOC_GPIO_NUM    28
 #define CAM_Y9_GPIO_NUM      16
 #define CAM_Y8_GPIO_NUM      17
 #define CAM_Y7_GPIO_NUM      18

@@ -10,7 +10,7 @@ class CameraDevice {
 public:
   void init();
   void captureAndSend();  // 示例：捕获图像发到 Service
-  void executeCommand(const String &cmd, JsonObject &params);
+  bool executeCommand(const String &cmd, const JsonObject &params);
 private:
   bool initialized = false;
 };

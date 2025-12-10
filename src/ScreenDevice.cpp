@@ -12,18 +12,20 @@ void ScreenDevice::init() {
   Serial.println("Screen initialized");
 }
 
-void ScreenDevice::executeCommand(const String &cmd, JsonObject &params) {
+bool ScreenDevice::executeCommand(const String &cmd, const JsonObject &params) {
   if (!initialized) {
     Serial.println("Screen not initialized");
-    return;
+    return false;
   }
   if (cmd == "drawText") {
-    const char *text = params.containsKey("text") ? params["text"] : "";
-    int x = params.containsKey("x") ? params["x"] : 0;
-    int y = params.containsKey("y") ? params["y"] : 0;
-    int font = params.containsKey("font") ? params["font"] : 2;
+    const char *text = params["text"].is<const char*>() ? params["text"].as<const char*>() : "";
+    int x = params["x"].is<int>() ? params["x"].as<int>() : 0;
+    int y = params["y"].is<int>() ? params["y"].as<int>() : 0;
+    int font = params["font"].is<int>() ? params["font"].as<int>() : 2;
     tft.drawString(text, x, y, font);
+    return true;
   } else {
     Serial.printf("ScreenDevice unknown cmd: %s\n", cmd.c_str());
+    return false;
   }
 }

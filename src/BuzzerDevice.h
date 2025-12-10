@@ -8,7 +8,7 @@
 class BuzzerDevice {
 public:
   void init();
-  void executeCommand(const String &cmd, JsonObject &params);
+  bool executeCommand(const String &cmd, const JsonObject &params);
 private:
   bool initialized = false;
 };

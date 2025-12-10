@@ -1,29 +1,33 @@
 #include "MotorDevice.h"
 #include <Arduino.h>
 
-MotorDevice::MotorDevice(): motors(STBY_PIN) {}
+MotorDevice::MotorDevice() {}
 
 void MotorDevice::init() {
   if (initialized) return;
   motors.begin();
-  motors.setMotorPins(AIN1, AIN2, PWMA, BIN1, BIN2, PWMB);
   initialized = true;
   Serial.println("Motor initialized");
 }
 
-void MotorDevice::executeCommand(const String &cmd, JsonObject &params) {
+bool MotorDevice::executeCommand(const String &cmd, const JsonObject &params) {
   if (!initialized) {
     Serial.println("Motor not initialized");
-    return;
+    return false;
   }
   if (cmd == "drive") {
-    int a = params.containsKey("a") ? params["a"] : 0;
-    int b = params.containsKey("b") ? params["b"] : 0;
-    motors.driveMotorA(a);
-    motors.driveMotorB(b);
+    float a = params["a"].is<float>() ? params["a"].as<float>() : 0.0;
+    float b = params["b"].is<float>() ? params["b"].as<float>() : 0.0;
+    // Convert from -100..100 range to -1.0..1.0 range expected by TB6612FNG library
+    float velocityA = a / 100.0;
+    float velocityB = b / 100.0;
+    motors.drive(velocityA, velocityB);
+    return true;
   } else if (cmd == "brake") {
     motors.brake();
+    return true;
   } else {
     Serial.printf("MotorDevice unknown cmd: %s\n", cmd.c_str());
+    return false;
   }
 }

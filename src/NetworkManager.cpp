@@ -107,10 +107,10 @@ void NetworkManager::connectToService(const String &host, uint16_t port) {
   socketClient.begin(host.c_str(), port);
 
   // 基本事件回调
-  socketClient.on("connect", []() {
+  socketClient.on("connect", [](const char *payload, size_t length) {
     Serial.println("Socket.io connected");
   });
-  socketClient.on("disconnect", []() {
+  socketClient.on("disconnect", [](const char *payload, size_t length) {
     Serial.println("Socket.io disconnected");
   });
   socketClient.on("message", [](const char *payload, size_t length) {
